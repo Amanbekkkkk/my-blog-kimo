@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Личный блог</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a id="siteLogo" class="logo" href="#">Мой блог</a>
+      <nav class="main-nav">
+        <a href="#posts">Посты</a>
+        <a href="#about">Обо мне</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+      <button id="authButton" class="button button-secondary">Войти / Регистрация</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-text">
+        <p class="eyebrow">Личный блог</p>
+        <h1 id="heroTitle">Истории, мысли и вдохновение</h1>
+        <p id="heroText">Тebя ждут атмосферные посты о путешествиях, креативе и жизни так, как она есть.</p>
+        <div class="hero-actions">
+          <a class="button" href="#posts">Читать посты</a>
+          <button id="readMoreButton" class="button button-secondary">Узнать больше</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-inner">
+          <p id="heroSubtext">Новые публикации, красивые истории и идеи для души.</p>
+          <p id="heroFooter">Вдохновение здесь, чтобы вы могли вернуться снова и снова.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="authPage" class="auth-page container hidden">
+      <div class="auth-grid">
+        <div class="auth-panel">
+          <p class="eyebrow">Добро пожаловать</p>
+          <h2>Войдите или зарегистрируйтесь</h2>
+          <p>Используйте защищённую авторизацию по Email. После входа вы сможете оставлять комментарии, а администратор — управлять контентом.</p>
+          <div class="auth-switch" role="tablist">
+            <button type="button" class="auth-tab active" data-view="login">Вход</button>
+            <button type="button" class="auth-tab" data-view="register">Регистрация</button>
+          </div>
+        </div>
+
+        <div class="auth-card">
+          <button id="authClosePage" class="close-button" type="button">&times;</button>
+          <div id="authForms">
+            <form id="loginForm" class="auth-form active-form">
+              <h3>Вход</h3>
+              <button type="button" id="googleSignIn" class="button button-google">
+                <span class="google-icon">G</span> Войти через Google
+              </button>
+              <div class="separator"><span>или</span></div>
+              <label class="field">
+                <span>Email</span>
+                <input id="loginEmail" type="email" placeholder="you@example.com" required />
+              </label>
+              <label class="field">
+                <span>Пароль</span>
+                <input id="loginPassword" type="password" placeholder="••••••••" required />
+              </label>
+              <p class="auth-note"><button type="button" id="forgotPasswordLink" class="link-button">Забыли пароль?</button></p>
+              <button class="button" type="submit">Войти</button>
+            </form>
+
+            <form id="registerForm" class="auth-form hidden">
+              <h3>Регистрация</h3>
+              <button type="button" id="googleSignUp" class="button button-google">
+                <span class="google-icon">G</span> Зарегистрироваться через Google
+              </button>
+              <div class="separator"><span>или</span></div>
+              <label class="field">
+                <span>Имя</span>
+                <input id="registerName" type="text" placeholder="Алексей" required />
+              </label>
+              <label class="field">
+                <span>Email</span>
+                <input id="registerEmail" type="email" placeholder="you@example.com" required />
+              </label>
+              <label class="field">
+                <span>Пароль</span>
+                <input id="registerPassword" type="password" placeholder="••••••••" required />
+              </label>
+              <label class="field">
+                <span>Повторите пароль</span>
+                <input id="registerConfirmPassword" type="password" placeholder="••••••••" required />
+              </label>
+              <p class="auth-note">Пароль должен быть не менее 8 символов, содержать заглавную букву, цифру и символ.</p>
+              <button class="button" type="submit">Зарегистрироваться</button>
+            </form>
+
+            <form id="resetForm" class="auth-form hidden">
+              <h3>Восстановление пароля</h3>
+              <label class="field">
+                <span>Email</span>
+                <input id="resetEmail" type="email" placeholder="you@example.com" required />
+              </label>
+              <label class="field">
+                <span>Новый пароль</span>
+                <input id="resetPassword" type="password" placeholder="••••••••" required />
+              </label>
+              <label class="field">
+                <span>Повторите пароль</span>
+                <input id="resetConfirmPassword" type="password" placeholder="••••••••" required />
+              </label>
+              <p class="auth-note">Введите тот же Email, что использовали при регистрации.</p>
+              <button class="button" type="submit">Обновить пароль</button>
+              <p class="auth-note"><button type="button" id="backToLogin" class="link-button">Вернуться к входу</button></p>
+            </form>
+
+            <p id="authMessage" class="admin-message"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="account" class="account container hidden">
+      <div class="section-header">
+        <h2>Профиль</h2>
+        <p>Здесь вы можете управлять своим аккаунтом и перейти к админ-панели.</p>
+      </div>
+      <div class="account-grid">
+        <div class="auth-card">
+          <div class="admin-editor-header">
+            <div>
+              <p id="profileLabel" class="profile-label">Вы ещё не вошли в профиль</p>
+              <p id="profileHint" class="admin-note">Нажмите кнопку «Войти / Регистрация» для доступа.</p>
+            </div>
+            <button id="logoutButton" class="button button-secondary" type="button">Выйти</button>
+          </div>
+        </div>
+
+        <div id="adminControls" class="auth-card hidden">
+          <h3>Админ-панель</h3>
+          <div class="admin-section">
+            <div class="admin-section-header">
+              <h4>Посты</h4>
+              <button id="newPostButton" class="button button-secondary" type="button">Новый пост</button>
+            </div>
+            <div id="postAdminList" class="admin-list"></div>
+          </div>
+
+          <div class="admin-section">
+            <h4>Редактор поста</h4>
+            <form id="postEditorForm" class="site-config-form hidden">
+              <label class="field">
+                <span>Заголовок</span>
+                <input id="postEditorTitle" type="text" required />
+              </label>
+              <label class="field">
+                <span>Краткое описание</span>
+                <textarea id="postEditorExcerpt" rows="2" required></textarea>
+              </label>
+              <label class="field">
+                <span>Текст поста</span>
+                <textarea id="postEditorBody" rows="6" required></textarea>
+              </label>
+              <label class="field">
+                <span>Изображение</span>
+                <input id="postEditorImageFile" type="file" accept="image/*" />
+                <input id="postEditorImage" type="url" placeholder="Ссылка на изображение (необязательно)" />
+              </label>
+              <img id="postEditorPreview" class="upload-preview hidden" alt="Превью" />
+              <label class="field">
+                <span>Ссылка для кнопки</span>
+                <input id="postEditorLink" type="url" placeholder="https://example.com" />
+              </label>
+              <button class="button" type="submit">Сохранить пост</button>
+            </form>
+          </div>
+
+          <div class="admin-section">
+            <h4>Текст на сайте</h4>
+            <form id="siteConfigForm" class="site-config-form">
+              <label class="field">
+                <span>Заголовок</span>
+                <input id="siteHeroTitle" type="text" required />
+              </label>
+              <label class="field">
+                <span>Текст на главной</span>
+                <textarea id="siteHeroText" rows="2" required></textarea>
+              </label>
+              <label class="field">
+                <span>Нижний текст карточки</span>
+                <input id="siteHeroSubtext" type="text" required />
+              </label>
+              <label class="field">
+                <span>Текст внизу секции</span>
+                <input id="siteHeroFooter" type="text" required />
+              </label>
+              <label class="field">
+                <span>Первый абзац «Обо мне»</span>
+                <textarea id="siteAboutText1" rows="2" required></textarea>
+              </label>
+              <label class="field">
+                <span>Второй абзац «Обо мне»</span>
+                <textarea id="siteAboutText2" rows="2" required></textarea>
+              </label>
+              <label class="field">
+                <span>Список преимуществ</span>
+                <textarea id="siteAboutList" rows="3" required></textarea>
+              </label>
+              <label class="field">
+                <span>Почта для контактов</span>
+                <input id="siteContactEmail" type="email" required />
+              </label>
+              <label class="field">
+                <span>Текст контактов</span>
+                <input id="siteContactNote" type="text" required />
+              </label>
+              <button class="button" type="submit">Сохранить сайт</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="posts" class="posts container">
+      <div class="section-header">
+        <h2>Последние посты</h2>
+        <p>Свежие заметки из моего дневника и интересные статьи для любого дня.</p>
+      </div>
+      <div id="postsGrid" class="posts-grid"></div>
+    </section>
+
+    <section id="postDetail" class="post-detail overlay hidden">
+      <div class="post-detail-card">
+        <button id="detailCloseButton" class="close-button" type="button">&times;</button>
+        <div id="detailInner"></div>
+      </div>
+    </section>
+
+    <section id="about" class="about container">
+      <div class="section-header">
+        <h2>Обо мне</h2>
+        <p>Немного о том, кто я и почему завёл этот блог.</p>
+      </div>
+      <div class="about-grid">
+        <div>
+          <p id="aboutText1">Я люблю исследовать новые идеи и делиться тем, что помогает мне жить осознанно. На страницах этого блога вы найдёте статьи о продуктивности, путешествиях, кино и творческих проектах.</p>
+          <p id="aboutText2">Моё желание — делать простые темы понятными и вдохновлять на шаги к новым достижениям.</p>
+        </div>
+        <div class="about-card">
+          <h3>Что здесь вы найдёте</h3>
+          <ul id="aboutList">
+            <li>Лайфхаки креативного планирования</li>
+            <li>Истории из путешествий</li>
+            <li>Заметки о саморазвитии</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact container">
+      <div class="section-header">
+        <h2>Контакты</h2>
+        <p>Буду рад обратной связи и новым идеям.</p>
+      </div>
+      <div class="contact-grid">
+        <div>
+          <p>Пишите на почту: <a id="contactEmail" href="mailto:0709211822a@gmail.com">0709211822a@gmail.com</a></p>
+          <p id="contactNote">Или следите за обновлениями в социальных сетях.</p>
+        </div>
+        <div class="contact-card">
+          <p>Спасибо за визит! Здесь всегда найдётся вдохновение для новых историй.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 Личный блог. Сделано с любовью.</p>
+      <p class="footer-tag">Творите, вдохновляйтесь и делитесь.</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
