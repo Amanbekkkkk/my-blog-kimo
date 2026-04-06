@@ -2,6 +2,18 @@
 
 Это статический сайт на HTML/CSS/JavaScript. Для публикации проекта достаточно разместить файлы `index.html`, `styles.css` и `script.js` на любом статическом хостинге.
 
+## Настройка входа через Google
+
+1. Перейдите в [Google Cloud Console](https://console.cloud.google.com/).
+2. Создайте новый проект или выберите существующий.
+3. Включите Google Identity API.
+4. Создайте OAuth 2.0 Client ID:
+   - Тип: Web application
+   - Authorized JavaScript origins: добавьте ваш домен (например, `https://amanbekkkkk.github.io`)
+   - Authorized redirect URIs: добавьте `https://amanbekkkkk.github.io/my-blog-kimo/` (или ваш URL)
+5. Скопируйте Client ID.
+6. В файле `index.html` замените `YOUR_GOOGLE_CLIENT_ID` на ваш Client ID.
+
 ## Как выложить на GitHub Pages
 
 1. Создайте новый репозиторий на GitHub.

@@ -15,8 +15,6 @@ const registerForm = document.getElementById('registerForm');
 const resetForm = document.getElementById('resetForm');
 const forgotPasswordLink = document.getElementById('forgotPasswordLink');
 const backToLoginButton = document.getElementById('backToLogin');
-const googleSignIn = document.getElementById('googleSignIn');
-const googleSignUp = document.getElementById('googleSignUp');
 const authMessage = document.getElementById('authMessage');
 const loginEmail = document.getElementById('loginEmail');
 const loginPassword = document.getElementById('loginPassword');
@@ -775,8 +773,6 @@ function init() {
     clearAuthMessage();
   });
   logoutButton.addEventListener('click', logout);
-  googleSignIn.addEventListener('click', () => showAuthMessage('Вход через Google будет доступен в следующем обновлении.'));
-  googleSignUp.addEventListener('click', () => showAuthMessage('Регистрация через Google готовится к запуску.'));
   newPostButton.addEventListener('click', () => openEditor());
   postEditorForm.addEventListener('submit', savePost);
   postEditorImageFile.addEventListener('change', handleImageUpload);
@@ -785,6 +781,91 @@ function init() {
   postDetailSection.addEventListener('click', event => {
     if (event.target === postDetailSection) closeDetail();
   });
+}
+
+// Google Sign-In handlers
+function handleGoogleSignIn(response) {
+  // Decode the JWT token
+  const responsePayload = decodeJwtResponse(response.credential);
+  console.log("Google Sign-In successful:", responsePayload);
+
+  // Use email as username
+  const email = responsePayload.email;
+  const name = responsePayload.name || responsePayload.email;
+
+  // Check if user exists, if not, create as user
+  getItem(STORE_USERS, email).then(existingUser => {
+    if (existingUser) {
+      currentUser = existingUser;
+      sessionStorage.setItem(SESSION_USER_KEY, email);
+      showAuthMessage(`Вы вошли через Google как ${existingUser.role === 'admin' ? 'администратор' : 'пользователь'} ${existingUser.name || existingUser.username}.`);
+      renderAccountArea();
+      renderPosts();
+      hideAuthPage();
+    } else {
+      // Create new user
+      putItem(STORE_USERS, {
+        username: email,
+        name: name,
+        role: 'user',
+        passwordHash: '', // No password for Google users
+        createdAt: new Date().toISOString()
+      }).then(() => {
+        currentUser = { username: email, name: name, role: 'user' };
+        sessionStorage.setItem(SESSION_USER_KEY, email);
+        showAuthMessage(`Регистрация через Google успешна. Вы вошли как ${name}.`);
+        renderAccountArea();
+        renderPosts();
+        hideAuthPage();
+      });
+    }
+  }).catch(error => {
+    console.error("Error handling Google Sign-In:", error);
+    showAuthMessage('Ошибка входа через Google.', true);
+  });
+}
+
+function handleGoogleSignUp(response) {
+  // For signup, treat as new user
+  const responsePayload = decodeJwtResponse(response.credential);
+  console.log("Google Sign-Up successful:", responsePayload);
+
+  const email = responsePayload.email;
+  const name = responsePayload.name || responsePayload.email;
+
+  // Check if user exists
+  getItem(STORE_USERS, email).then(existingUser => {
+    if (existingUser) {
+      showAuthMessage('Пользователь с таким Email уже зарегистрирован.', true);
+    } else {
+      putItem(STORE_USERS, {
+        username: email,
+        name: name,
+        role: 'user',
+        passwordHash: '',
+        createdAt: new Date().toISOString()
+      }).then(() => {
+        currentUser = { username: email, name: name, role: 'user' };
+        sessionStorage.setItem(SESSION_USER_KEY, email);
+        showAuthMessage(`Регистрация через Google успешна. Вы вошли как ${name}.`);
+        renderAccountArea();
+        renderPosts();
+        hideAuthPage();
+      });
+    }
+  }).catch(error => {
+    console.error("Error handling Google Sign-Up:", error);
+    showAuthMessage('Ошибка регистрации через Google.', true);
+  });
+}
+
+function decodeJwtResponse(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+  return JSON.parse(jsonPayload);
 }
 
 init();

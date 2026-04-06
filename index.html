@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Личный блог</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -55,9 +56,21 @@
           <div id="authForms">
             <form id="loginForm" class="auth-form active-form">
               <h3>Вход</h3>
-              <button type="button" id="googleSignIn" class="button button-google">
-                <span class="google-icon">G</span> Войти через Google
-              </button>
+              <div id="g_id_onload"
+                   data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                   data-context="signin"
+                   data-ux_mode="popup"
+                   data-callback="handleGoogleSignIn"
+                   data-auto_prompt="false">
+              </div>
+              <div class="g_id_signin"
+                   data-type="standard"
+                   data-shape="rectangular"
+                   data-theme="outline"
+                   data-text="signin_with"
+                   data-size="large"
+                   data-logo_alignment="left">
+              </div>
               <div class="separator"><span>или</span></div>
               <label class="field">
                 <span>Email</span>
@@ -73,9 +86,21 @@
 
             <form id="registerForm" class="auth-form hidden">
               <h3>Регистрация</h3>
-              <button type="button" id="googleSignUp" class="button button-google">
-                <span class="google-icon">G</span> Зарегистрироваться через Google
-              </button>
+              <div id="g_id_onload_signup"
+                   data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                   data-context="signup"
+                   data-ux_mode="popup"
+                   data-callback="handleGoogleSignUp"
+                   data-auto_prompt="false">
+              </div>
+              <div class="g_id_signin"
+                   data-type="standard"
+                   data-shape="rectangular"
+                   data-theme="outline"
+                   data-text="signup_with"
+                   data-size="large"
+                   data-logo_alignment="left">
+              </div>
               <div class="separator"><span>или</span></div>
               <label class="field">
                 <span>Имя</span>
